@@ -2,6 +2,7 @@ package com.crossbonemagister.liquigraph.render;
 
 import com.crossbonemagister.liquigraph.model.Column;
 import com.crossbonemagister.liquigraph.model.Table;
+import com.crossbonemagister.liquigraph.render.impl.EntityRelationshipModelMermaidRenderer;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
