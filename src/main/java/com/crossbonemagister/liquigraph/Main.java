@@ -2,7 +2,7 @@ package com.crossbonemagister.liquigraph;
 
 import com.crossbonemagister.liquigraph.mapper.LiquibaseToModelMapper;
 import com.crossbonemagister.liquigraph.model.Table;
-import com.crossbonemagister.liquigraph.render.impl.EntityRelationshipModelMermaidRenderer;
+import com.crossbonemagister.liquigraph.renderer.impl.EntityRelationshipModelMermaidRenderer;
 import liquibase.changelog.ChangeLogParameters;
 import liquibase.changelog.DatabaseChangeLog;
 import liquibase.parser.ChangeLogParser;

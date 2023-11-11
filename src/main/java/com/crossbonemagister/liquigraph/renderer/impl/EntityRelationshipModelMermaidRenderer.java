@@ -1,8 +1,8 @@
-package com.crossbonemagister.liquigraph.render.impl;
+package com.crossbonemagister.liquigraph.renderer.impl;
 
 import com.crossbonemagister.liquigraph.model.Column;
 import com.crossbonemagister.liquigraph.model.Table;
-import com.crossbonemagister.liquigraph.render.EntityRelationshipModelRenderer;
+import com.crossbonemagister.liquigraph.renderer.EntityRelationshipModelRenderer;
 
 import java.io.IOException;
 import java.util.List;

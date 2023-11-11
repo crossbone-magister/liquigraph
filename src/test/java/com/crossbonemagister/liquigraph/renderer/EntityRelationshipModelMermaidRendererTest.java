@@ -1,8 +1,8 @@
-package com.crossbonemagister.liquigraph.render;
+package com.crossbonemagister.liquigraph.renderer;
 
 import com.crossbonemagister.liquigraph.model.Column;
 import com.crossbonemagister.liquigraph.model.Table;
-import com.crossbonemagister.liquigraph.render.impl.EntityRelationshipModelMermaidRenderer;
+import com.crossbonemagister.liquigraph.renderer.impl.EntityRelationshipModelMermaidRenderer;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 

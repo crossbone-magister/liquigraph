@@ -1,4 +1,4 @@
-package com.crossbonemagister.liquigraph.render;
+package com.crossbonemagister.liquigraph.renderer;
 
 import com.crossbonemagister.liquigraph.model.Table;
 
