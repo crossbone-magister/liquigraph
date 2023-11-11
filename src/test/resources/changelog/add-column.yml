@@ -18,4 +18,5 @@ databaseChangeLog:
                   constraints:
                     nullable: false
                     primaryKey: true
+                    unique: true
 

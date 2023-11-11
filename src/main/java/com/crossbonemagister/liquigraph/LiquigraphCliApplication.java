@@ -12,11 +12,11 @@ public class LiquigraphCliApplication {
 
     public static void main(String[] args) throws Exception {
         if (args.length <= 0) {
-            throw new IllegalArgumentException("Missing argument: change log file");
+            throw new IllegalArgumentException("Missing argument: changelog file path");
         }
         String changeLogFile = args[0];
         if (changeLogFile == null || changeLogFile.isEmpty()) {
-            throw new IllegalArgumentException("Invalid argument: change log file");
+            throw new IllegalArgumentException("Invalid argument: changelog file");
         }
         LiquibaseChangeLogLoader liquibaseChangeLogLoader = new LiquibaseChangeLogLoader();
         DatabaseChangeLog changeLog = liquibaseChangeLogLoader.load(changeLogFile);

@@ -37,7 +37,7 @@ class LiquibaseToModelMapperTest {
         assertThat(configurationTable).extracting(Table::getName).isEqualTo("CONFIGURATION");
         List<Column> columns = configurationTable.getColumns();
         assertThat(columns).size().isEqualTo(1);
-        assertThat(columns.getFirst()).extracting(Column::getName, Column::getType, Column::isPrimaryKey, Column::isUnique).containsExactly("KEY_", "VARCHAR(20)", true, false);
+        assertThat(columns.getFirst()).extracting(Column::getName, Column::getType, Column::isPrimaryKey, Column::isUnique).containsExactly("KEY_", "VARCHAR(20)", true, true);
     }
 
     @Test
