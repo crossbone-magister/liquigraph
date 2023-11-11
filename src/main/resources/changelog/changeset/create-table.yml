@@ -1,0 +1,46 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-table-configuration
+      author: liquigraph
+      changes:
+        - createTable:
+            tableName: CONFIGURATION
+            columns:
+              - column:
+                  name: KEY_
+                  type: VARCHAR(20)
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+              - column:
+                  name: VALUE_
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+#              - column:
+#                  name: VALID_UNTIL
+#                  type: TIMESTAMP
+#                constraints:
+#                  nullable: false
+#                  defaultValueComputed: CURRENT_TIMESTAMP
+#        - addNotNullConstraint:
+#            columnName: KEY_
+#            tableName: CONFIGURATION
+#            constraintName: CONFIGURATION_KEY_NOT_NULL
+#        - addNotNullConstraint:
+#            columnName: VALUE_
+#            tableName: CONFIGURATION
+#            constraintName: CONFIGURATION_VALUE_NOT_NULL
+#        - addNotNullConstraint:
+#            columnName: VALID_UNTIL
+#            tableName: CONFIGURATION
+#            constraintName: CONFIGURATION_VALID_UNTIL_NOT_NULL
+##        - addDefaultValue:
+##            columnName: VALID_UNTIL
+##            tableName: CONFIGURATION
+##            defaultValueDate: 2099-12-31
+##            defaultValueConstraintName: CONFIGURATION_VALID_UNTIL_DEFAULT
+#        - addUniqueConstraint:
+#            columnNames: KEY_, VALID_UNTIL
+#            tableName: CONFIGURATION
+#            constraintName: CONFIGURATION_KEY_VALID_UNTIL_UNIQUE

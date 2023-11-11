@@ -1,0 +1,19 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-table-test
+      author: liquigraph-test
+      changes:
+        - createTable:
+            tableName: CONFIGURATION
+            columns:
+              - column:
+                  name: KEY_
+                  type: VARCHAR(20)
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+              - column:
+                  name: VALUE_
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false

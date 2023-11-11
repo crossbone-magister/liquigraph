@@ -1,0 +1,14 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-table-configuration
+      author: liquigraph
+      changes:
+        - addColumn:
+            tableName: CONFIGURATION
+            columns:
+              - column:
+                  name: VALID_UNTIL
+                  type: TIMESTAMP
+                  constraints:
+                    nullable: false
+                    defaultValueComputed: CURRENT_TIMESTAMP
