@@ -1,37 +1,29 @@
 package com.crossbonemagister.liquigraph;
 
+import com.crossbonemagister.liquigraph.loader.LiquibaseChangeLogLoader;
 import com.crossbonemagister.liquigraph.mapper.LiquibaseToModelMapper;
 import com.crossbonemagister.liquigraph.model.Table;
 import com.crossbonemagister.liquigraph.renderer.impl.EntityRelationshipModelMermaidRenderer;
-import liquibase.changelog.ChangeLogParameters;
 import liquibase.changelog.DatabaseChangeLog;
-import liquibase.parser.ChangeLogParser;
-import liquibase.parser.ChangeLogParserFactory;
-import liquibase.resource.ClassLoaderResourceAccessor;
-import liquibase.resource.DirectoryResourceAccessor;
-import liquibase.resource.ResourceAccessor;
-import liquibase.resource.SearchPathResourceAccessor;
 
-import java.io.FileNotFoundException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 
 public class Main {
 
     public static void main(String[] args) throws Exception {
-        String changeLogFile = "src/main/resources/changelog/changelog.yml";
-        ResourceAccessor resourceAccessor = createResourceAccessor();
-        ChangeLogParser parser = ChangeLogParserFactory.getInstance().getParser(changeLogFile, resourceAccessor);
-        DatabaseChangeLog changeLog = parser.parse(changeLogFile, new ChangeLogParameters(), resourceAccessor);
+        if (args.length <= 0) {
+            throw new IllegalArgumentException("Missing argument: change log file");
+        }
+        String changeLogFile = args[0];
+        if (changeLogFile == null || changeLogFile.isEmpty()) {
+            throw new IllegalArgumentException("Invalid argument: change log file");
+        }
+        LiquibaseChangeLogLoader liquibaseChangeLogLoader = new LiquibaseChangeLogLoader();
+        DatabaseChangeLog changeLog = liquibaseChangeLogLoader.load(changeLogFile);
         LiquibaseToModelMapper modelMapper = new LiquibaseToModelMapper();
         List<Table> model = modelMapper.map(changeLog);
         EntityRelationshipModelMermaidRenderer renderer = new EntityRelationshipModelMermaidRenderer();
         renderer.render(model, System.out);
     }
 
-    private static ResourceAccessor createResourceAccessor() throws FileNotFoundException {
-        Path searchPath = Paths.get(".").toAbsolutePath();
-        return new SearchPathResourceAccessor(new DirectoryResourceAccessor(searchPath), new ClassLoaderResourceAccessor());
-    }
 }
