@@ -8,7 +8,7 @@ import liquibase.changelog.DatabaseChangeLog;
 
 import java.util.List;
 
-public class Main {
+public class LiquigraphCliApplication {
 
     public static void main(String[] args) throws Exception {
         if (args.length <= 0) {
