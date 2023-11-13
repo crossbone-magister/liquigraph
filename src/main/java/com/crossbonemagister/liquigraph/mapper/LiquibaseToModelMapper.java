@@ -6,6 +6,7 @@ import liquibase.change.ColumnConfig;
 import liquibase.change.ConstraintsConfig;
 import liquibase.change.core.AddColumnChange;
 import liquibase.change.core.AddPrimaryKeyChange;
+import liquibase.change.core.AddUniqueConstraintChange;
 import liquibase.change.core.CreateTableChange;
 import liquibase.changelog.DatabaseChangeLog;
 
@@ -35,6 +36,9 @@ public class LiquibaseToModelMapper {
                     case AddPrimaryKeyChange primaryKey:
                         addPrimaryKey(primaryKey);
                         break;
+                    case AddUniqueConstraintChange uniqueConstraint:
+                        addUniqueConstraint(uniqueConstraint.getTableName(), uniqueConstraint);
+                        break;
                     default:
                         break;
                 }
@@ -45,6 +49,13 @@ public class LiquibaseToModelMapper {
             tableBuilder.column(value.build());
         });
         return tableBuilders.values().stream().map(Table.TableBuilder::build).toList();
+    }
+
+    private void addUniqueConstraint(String tableName, AddUniqueConstraintChange uniqueConstraint) {
+        for (String columnName : uniqueConstraint.getColumnNames().split(",")) {
+            Column.ColumnBuilder columnBuilder = columnBuilders.get(getColumnKeyName(tableName, columnName));
+            columnBuilder.unique(true);
+        }
     }
 
     private void addPrimaryKey(AddPrimaryKeyChange primaryKey) {

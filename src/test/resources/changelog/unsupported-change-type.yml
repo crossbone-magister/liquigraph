@@ -1,0 +1,12 @@
+databaseChangeLog:
+  - changeSet:
+      id: add-column-test
+      author: liquigraph-test
+      changes:
+        - insert:
+            columns:
+              - column:
+                  name: NEW_COLUMN
+                  value: 'new value'
+            tableName: CONFIGURATION
+

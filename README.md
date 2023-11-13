@@ -10,11 +10,14 @@ The application is at its earliest stages, so use at your own risk.
 
 Liquigraph currently supports the following commands:
 
-| Command         | Support |
-|-----------------|---------|
-| Create Table    | Partial |
-| Add Column      | Partial |
-| Add Primary Key | Partial |
+| Command               | Support |
+|-----------------------|---------|
+| Create Table          | Partial |
+| Add Column            | Partial |
+| Add Primary Key       | Partial |
+| Add Unique Constraint | Partial |
+
+**Note:** Partial support means that not all the attributes of the change have been analyzed yet.
 
 ### Output formats
 

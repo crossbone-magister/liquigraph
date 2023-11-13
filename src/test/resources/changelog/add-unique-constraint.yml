@@ -1,0 +1,21 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-table-test
+      author: liquigraph-test
+      changes:
+        - createTable:
+            tableName: CONFIGURATION
+            columns:
+              - column:
+                  name: KEY_
+                  type: VARCHAR(20)
+                  constraints:
+                    nullable: false
+  - changeSet:
+      id: add-unique-constraint-test
+      author: liquigraph-test
+      changes:
+        - addUniqueConstraint:
+            columnNames: KEY_
+            tableName: CONFIGURATION
+            constraintName: CONFIGURATION_KEY_UK

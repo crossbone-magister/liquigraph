@@ -51,6 +51,24 @@ class LiquibaseToModelMapperTest {
         assertThat(columns.getFirst()).extracting(Column::getName, Column::getType, Column::isPrimaryKey, Column::isUnique).containsExactly("KEY_", "VARCHAR(20)", true, false);
     }
 
+    @Test
+    void mapAddUniqueConstraint() throws LiquibaseException {
+        DatabaseChangeLog databaseChangeLog = loadChangeLog("changelog/add-unique-constraint.yml");
+        List<Table> tables = new LiquibaseToModelMapper().map(databaseChangeLog);
+        Table configurationTable = tables.get(0);
+        assertThat(configurationTable).extracting(Table::getName).isEqualTo("CONFIGURATION");
+        List<Column> columns = configurationTable.getColumns();
+        assertThat(columns).size().isEqualTo(1);
+        assertThat(columns.getFirst()).extracting(Column::getName, Column::getType, Column::isPrimaryKey, Column::isUnique).containsExactly("KEY_", "VARCHAR(20)", false, true);
+    }
+
+    @Test
+    void mapUnsupportedChangeType() throws LiquibaseException {
+        DatabaseChangeLog databaseChangeLog = loadChangeLog("changelog/unsupported-change-type.yml");
+        List<Table> tables = new LiquibaseToModelMapper().map(databaseChangeLog);
+        assertThat(tables).isEmpty();
+    }
+
     private static DatabaseChangeLog loadChangeLog(String changeLogFile) throws LiquibaseException {
         ResourceAccessor resourceAccessor = new ClassLoaderResourceAccessor();
         ChangeLogParser parser = ChangeLogParserFactory.getInstance().getParser(changeLogFile, resourceAccessor);
