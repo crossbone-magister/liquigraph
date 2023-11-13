@@ -6,10 +6,23 @@ import org.junit.jupiter.api.Test;
 class LiquigraphCliApplicationTest {
 
     @Test
+    public void constructorTest() {
+        Assertions.assertThatCode(LiquigraphCliApplication::new)
+            .doesNotThrowAnyException();
+    }
+
+    @Test
     public void testMainNoArgs() {
         Assertions.assertThatThrownBy(() -> LiquigraphCliApplication.main(new String[]{}))
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessage("Missing argument: changelog file path");
+    }
+
+    @Test
+    public void testMainNullArgs() {
+        Assertions.assertThatThrownBy(() -> LiquigraphCliApplication.main(new String[]{null}))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("Invalid argument: changelog file");
     }
 
     @Test

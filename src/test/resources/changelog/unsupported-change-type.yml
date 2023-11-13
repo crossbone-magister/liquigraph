@@ -9,4 +9,3 @@ databaseChangeLog:
                   name: NEW_COLUMN
                   value: 'new value'
             tableName: CONFIGURATION
-

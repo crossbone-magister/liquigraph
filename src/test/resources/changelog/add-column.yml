@@ -19,4 +19,3 @@ databaseChangeLog:
                     nullable: false
                     primaryKey: true
                     unique: true
-
