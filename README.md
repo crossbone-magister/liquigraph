@@ -11,14 +11,15 @@ changelog files.
 
 Liquigraph currently supports the following commands:
 
-| Command               | Support | Note                                     |
-|-----------------------|---------|------------------------------------------|
-| Create Table          | Partial |                                          |
-| Add Column            | Partial |                                          |
-| Add Primary Key       | Partial |                                          |
-| Add Unique Constraint | Partial |                                          |
-| Drop Table            | Partial | cascade constraints attribute is ignored |
-| Drop Column           | Full    |                                          |
+| Command               | Support | Note                                                       |
+|-----------------------|---------|------------------------------------------------------------|
+| Create Table          | Partial |                                                            |
+| Add Column            | Partial |                                                            |
+| Add Primary Key       | Partial |                                                            |
+| Add Unique Constraint | Partial |                                                            |
+| Drop Table            | Partial | cascade constraints attribute is ignored                   |
+| Drop Column           | Full    |                                                            |
+| Rename Column         | Partial | Method does not respect insertion order of original column |
 
 > **Note:** Partial support means that not all the attributes of the change have been analyzed and implemented yet.
 

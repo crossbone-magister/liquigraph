@@ -1,0 +1,12 @@
+databaseChangeLog:
+  - include:
+      file: create-table.yml
+      relativeToChangelogFile: true
+  - changeSet:
+      id: drop-column-single-test
+      author: liquigraph-test
+      changes:
+        - renameColumn:
+            tableName: CONFIGURATION
+            oldColumnName: KEY_
+            newColumnName: KEY

@@ -92,6 +92,17 @@ class LiquibaseToModelMapperTest {
     }
 
     @Test
+    void mapRenameColumn() throws LiquibaseException {
+        DatabaseChangeLog databaseChangeLog = loadChangeLog("changelog/rename-column.yml");
+        List<Table> tables = new LiquibaseToModelMapper().map(databaseChangeLog);
+        assertThat(tables).size().isEqualTo(1);
+        Table configurationTable = tables.get(0);
+        List<Column> columns = configurationTable.getColumns();
+        assertThat(columns).size().isEqualTo(2);
+        assertThat(columns.getLast()).extracting(Column::getName, Column::getType, Column::isPrimaryKey, Column::isUnique).containsExactly("KEY", "VARCHAR(20)", true, false);
+    }
+
+    @Test
     void mapUnsupportedChangeType() throws LiquibaseException {
         DatabaseChangeLog databaseChangeLog = loadChangeLog("changelog/unsupported-change-type.yml");
         List<Table> tables = new LiquibaseToModelMapper().map(databaseChangeLog);

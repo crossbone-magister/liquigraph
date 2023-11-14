@@ -46,6 +46,9 @@ public class LiquibaseToModelMapper {
                     case DropColumnChange dropColumn:
                         dropColumn(dropColumn);
                         break;
+                    case RenameColumnChange renameColumn:
+                        renameColumn(renameColumn);
+                        break;
                     default:
                         break;
                 }
@@ -56,6 +59,18 @@ public class LiquibaseToModelMapper {
             tableBuilder.column(value.build());
         });
         return tableBuilders.values().stream().map(Table.TableBuilder::build).toList();
+    }
+
+    private void renameColumn(RenameColumnChange renameColumn) {
+        renameColumn(renameColumn.getTableName(), renameColumn.getOldColumnName(), renameColumn.getNewColumnName());
+    }
+
+    private void renameColumn(String table, String oldName, String newName) {
+        Column.ColumnBuilder columnBuilder = columnBuilders.get(table, oldName);
+        columnBuilder.name(newName);
+        //TODO: This renames the column but doesn't maintain insertion order. Is it a problem or not?
+        columnBuilders.removeMultiKey(table, oldName);
+        columnBuilders.put(table, newName, columnBuilder);
     }
 
     private void dropColumn(DropColumnChange dropColumn) {
