@@ -21,6 +21,7 @@ class LiquibaseToModelMapperTest {
     void mapCreateMap() throws LiquibaseException {
         DatabaseChangeLog databaseChangeLog = loadChangeLog("changelog/create-table.yml");
         List<Table> tables = new LiquibaseToModelMapper().map(databaseChangeLog);
+        assertThat(tables).size().isEqualTo(1);
         Table configurationTable = tables.get(0);
         assertThat(configurationTable).extracting(Table::getName).isEqualTo("CONFIGURATION");
         List<Column> columns = configurationTable.getColumns();
@@ -33,8 +34,8 @@ class LiquibaseToModelMapperTest {
     void mapAddColumn() throws LiquibaseException {
         DatabaseChangeLog databaseChangeLog = loadChangeLog("changelog/add-column.yml");
         List<Table> tables = new LiquibaseToModelMapper().map(databaseChangeLog);
+        assertThat(tables).size().isEqualTo(1);
         Table configurationTable = tables.get(0);
-        assertThat(configurationTable).extracting(Table::getName).isEqualTo("CONFIGURATION");
         List<Column> columns = configurationTable.getColumns();
         assertThat(columns).size().isEqualTo(1);
         assertThat(columns.getFirst()).extracting(Column::getName, Column::getType, Column::isPrimaryKey, Column::isUnique).containsExactly("KEY_", "VARCHAR(20)", true, true);
@@ -44,8 +45,8 @@ class LiquibaseToModelMapperTest {
     void mapAddPrimaryKey() throws LiquibaseException {
         DatabaseChangeLog databaseChangeLog = loadChangeLog("changelog/add-primary-key.yml");
         List<Table> tables = new LiquibaseToModelMapper().map(databaseChangeLog);
+        assertThat(tables).size().isEqualTo(1);
         Table configurationTable = tables.get(0);
-        assertThat(configurationTable).extracting(Table::getName).isEqualTo("CONFIGURATION");
         List<Column> columns = configurationTable.getColumns();
         assertThat(columns).size().isEqualTo(1);
         assertThat(columns.getFirst()).extracting(Column::getName, Column::getType, Column::isPrimaryKey, Column::isUnique).containsExactly("KEY_", "VARCHAR(20)", true, false);
@@ -55,8 +56,8 @@ class LiquibaseToModelMapperTest {
     void mapAddUniqueConstraint() throws LiquibaseException {
         DatabaseChangeLog databaseChangeLog = loadChangeLog("changelog/add-unique-constraint.yml");
         List<Table> tables = new LiquibaseToModelMapper().map(databaseChangeLog);
+        assertThat(tables).size().isEqualTo(1);
         Table configurationTable = tables.get(0);
-        assertThat(configurationTable).extracting(Table::getName).isEqualTo("CONFIGURATION");
         List<Column> columns = configurationTable.getColumns();
         assertThat(columns).size().isEqualTo(1);
         assertThat(columns.getFirst()).extracting(Column::getName, Column::getType, Column::isPrimaryKey, Column::isUnique).containsExactly("KEY_", "VARCHAR(20)", false, true);
@@ -67,6 +68,16 @@ class LiquibaseToModelMapperTest {
         DatabaseChangeLog databaseChangeLog = loadChangeLog("changelog/drop-table.yml");
         List<Table> tables = new LiquibaseToModelMapper().map(databaseChangeLog);
         assertThat(tables).isEmpty();
+    }
+
+    @Test
+    void mapDropColumnMulti() throws LiquibaseException {
+        DatabaseChangeLog databaseChangeLog = loadChangeLog("changelog/drop-column-multi.yml");
+        List<Table> tables = new LiquibaseToModelMapper().map(databaseChangeLog);
+        assertThat(tables).size().isEqualTo(1);
+        Table configurationTable = tables.get(0);
+        List<Column> columns = configurationTable.getColumns();
+        assertThat(columns).isEmpty();
     }
 
     @Test

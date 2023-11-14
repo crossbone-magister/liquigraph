@@ -39,6 +39,9 @@ public class LiquibaseToModelMapper {
                     case DropTableChange dropTable:
                         dropTable(dropTable);
                         break;
+                    case DropColumnChange dropColumn:
+                        dropColumn(dropColumn);
+                        break;
                     default:
                         break;
                 }
@@ -51,8 +54,18 @@ public class LiquibaseToModelMapper {
         return tableBuilders.values().stream().map(Table.TableBuilder::build).toList();
     }
 
+    private void dropColumn(DropColumnChange dropColumn) {
+        dropColumn.getColumns().forEach(column -> {
+            dropColumn(dropColumn.getTableName(), column.getName());
+        });
+    }
+
+    private void dropColumn(String table, String column) {
+        columnBuilders.remove(getColumnKeyName(table, column));
+    }
+
     private void dropTable(DropTableChange dropTable) {
-        columnBuilders.keySet().removeIf(key -> key.startsWith(dropTable.getTableName()));
+        columnBuilders.keySet().stream().filter(key -> key.startsWith(dropTable.getTableName() + "_")).forEach(columnBuilders::remove);
         tableBuilders.remove(dropTable.getTableName());
     }
 
