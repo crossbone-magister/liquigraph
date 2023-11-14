@@ -1,0 +1,10 @@
+databaseChangeLog:
+  - include:
+      file: create-table.yml
+      relativeToChangelogFile: true
+  - changeSet:
+      id: drop-table-test
+      author: liquigraph-test
+      changes:
+        - dropTable:
+            tableName: CONFIGURATION

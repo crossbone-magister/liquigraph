@@ -63,6 +63,13 @@ class LiquibaseToModelMapperTest {
     }
 
     @Test
+    void mapDropTable() throws LiquibaseException {
+        DatabaseChangeLog databaseChangeLog = loadChangeLog("changelog/drop-table.yml");
+        List<Table> tables = new LiquibaseToModelMapper().map(databaseChangeLog);
+        assertThat(tables).isEmpty();
+    }
+
+    @Test
     void mapUnsupportedChangeType() throws LiquibaseException {
         DatabaseChangeLog databaseChangeLog = loadChangeLog("changelog/unsupported-change-type.yml");
         List<Table> tables = new LiquibaseToModelMapper().map(databaseChangeLog);

@@ -3,8 +3,7 @@
 Small CLI tool to generate Entity-Relationship diagrams from [Liquibase](https://github.com/liquibase/liquibase)
 changelog files.
 
-> **Warning**
-> The application is at its earliest stages, so use at your own risk.
+> **Warning:** The application is at its earliest stages, so use at your own risk.
 
 ## Features
 
@@ -12,15 +11,15 @@ changelog files.
 
 Liquigraph currently supports the following commands:
 
-| Command               | Support |
-|-----------------------|---------|
-| Create Table          | Partial |
-| Add Column            | Partial |
-| Add Primary Key       | Partial |
-| Add Unique Constraint | Partial |
+| Command               | Support | Note                                     |
+|-----------------------|---------|------------------------------------------|
+| Create Table          | Partial |                                          |
+| Add Column            | Partial |                                          |
+| Add Primary Key       | Partial |                                          |
+| Add Unique Constraint | Partial |                                          |
+| Drop Table            | Partial | cascade constraints attribute is ignored |
 
-> **Note**
-> Partial support means that not all the attributes of the change have been analyzed yet.
+> **Note:** Partial support means that not all the attributes of the change have been analyzed and implemented yet.
 
 ### Output formats
 

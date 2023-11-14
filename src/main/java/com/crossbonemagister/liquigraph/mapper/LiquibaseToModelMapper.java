@@ -4,10 +4,7 @@ import com.crossbonemagister.liquigraph.model.Column;
 import com.crossbonemagister.liquigraph.model.Table;
 import liquibase.change.ColumnConfig;
 import liquibase.change.ConstraintsConfig;
-import liquibase.change.core.AddColumnChange;
-import liquibase.change.core.AddPrimaryKeyChange;
-import liquibase.change.core.AddUniqueConstraintChange;
-import liquibase.change.core.CreateTableChange;
+import liquibase.change.core.*;
 import liquibase.changelog.DatabaseChangeLog;
 
 import java.util.LinkedHashMap;
@@ -39,6 +36,9 @@ public class LiquibaseToModelMapper {
                     case AddUniqueConstraintChange uniqueConstraint:
                         addUniqueConstraint(uniqueConstraint.getTableName(), uniqueConstraint);
                         break;
+                    case DropTableChange dropTable:
+                        dropTable(dropTable);
+                        break;
                     default:
                         break;
                 }
@@ -49,6 +49,11 @@ public class LiquibaseToModelMapper {
             tableBuilder.column(value.build());
         });
         return tableBuilders.values().stream().map(Table.TableBuilder::build).toList();
+    }
+
+    private void dropTable(DropTableChange dropTable) {
+        columnBuilders.keySet().removeIf(key -> key.startsWith(dropTable.getTableName()));
+        tableBuilders.remove(dropTable.getTableName());
     }
 
     private void addUniqueConstraint(String tableName, AddUniqueConstraintChange uniqueConstraint) {
