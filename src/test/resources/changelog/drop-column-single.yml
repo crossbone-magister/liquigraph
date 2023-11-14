@@ -1,0 +1,11 @@
+databaseChangeLog:
+  - include:
+      file: create-table.yml
+      relativeToChangelogFile: true
+  - changeSet:
+      id: drop-column-single-test
+      author: liquigraph-test
+      changes:
+        - dropColumn:
+            tableName: CONFIGURATION
+            columnName: VALUE_

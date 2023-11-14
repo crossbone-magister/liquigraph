@@ -18,7 +18,7 @@ Liquigraph currently supports the following commands:
 | Add Primary Key       | Partial |                                          |
 | Add Unique Constraint | Partial |                                          |
 | Drop Table            | Partial | cascade constraints attribute is ignored |
-| Drop Column           | Partial | Single column is not tested              |
+| Drop Column           | Full    |                                          |
 
 > **Note:** Partial support means that not all the attributes of the change have been analyzed and implemented yet.
 

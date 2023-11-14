@@ -6,6 +6,7 @@ import liquibase.change.ColumnConfig;
 import liquibase.change.ConstraintsConfig;
 import liquibase.change.core.*;
 import liquibase.changelog.DatabaseChangeLog;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -55,9 +56,13 @@ public class LiquibaseToModelMapper {
     }
 
     private void dropColumn(DropColumnChange dropColumn) {
-        dropColumn.getColumns().forEach(column -> {
-            dropColumn(dropColumn.getTableName(), column.getName());
-        });
+        if (StringUtils.isNotBlank(dropColumn.getColumnName())) {
+            dropColumn(dropColumn.getTableName(), dropColumn.getColumnName());
+        } else {
+            dropColumn.getColumns().forEach(column -> {
+                dropColumn(dropColumn.getTableName(), column.getName());
+            });
+        }
     }
 
     private void dropColumn(String table, String column) {
@@ -65,7 +70,8 @@ public class LiquibaseToModelMapper {
     }
 
     private void dropTable(DropTableChange dropTable) {
-        columnBuilders.keySet().stream().filter(key -> key.startsWith(dropTable.getTableName() + "_")).forEach(columnBuilders::remove);
+        //TODO: This is not using the dropColumn method because retrieving the single column keys is convoluted. Maybe the data structure holding the builders should be revised.
+        columnBuilders.keySet().removeIf(key -> key.startsWith(dropTable.getTableName()));
         tableBuilders.remove(dropTable.getTableName());
     }
 
