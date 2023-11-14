@@ -6,20 +6,23 @@ import liquibase.change.ColumnConfig;
 import liquibase.change.ConstraintsConfig;
 import liquibase.change.core.*;
 import liquibase.changelog.DatabaseChangeLog;
+import org.apache.commons.collections4.keyvalue.MultiKey;
+import org.apache.commons.collections4.map.LinkedMap;
+import org.apache.commons.collections4.map.MultiKeyMap;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class LiquibaseToModelMapper {
 
+    public static final int TABLE_MULTI_KEY_INDEX = 0;
+    public static final int COLUMN_MULTI_KEY_INDEX = 1;
     Map<String, Table.TableBuilder> tableBuilders = new LinkedHashMap<>();
-    Map<String, Column.ColumnBuilder> columnBuilders = new LinkedHashMap<>();
-
-    private static String getColumnKeyName(String tableName, String columnName) {
-        return tableName + "_" + columnName;
-    }
+    MultiKeyMap<String, Column.ColumnBuilder> columnBuilders = MultiKeyMap.multiKeyMap(new LinkedMap<>());
 
     public List<Table> map(DatabaseChangeLog changeLog) {
         changeLog.getChangeSets().forEach(changeSet -> {
@@ -49,7 +52,7 @@ public class LiquibaseToModelMapper {
             });
         });
         columnBuilders.forEach((key, value) -> {
-            Table.TableBuilder tableBuilder = tableBuilders.get(key.split("_")[0]);
+            Table.TableBuilder tableBuilder = tableBuilders.get(key.getKey(TABLE_MULTI_KEY_INDEX));
             tableBuilder.column(value.build());
         });
         return tableBuilders.values().stream().map(Table.TableBuilder::build).toList();
@@ -66,25 +69,29 @@ public class LiquibaseToModelMapper {
     }
 
     private void dropColumn(String table, String column) {
-        columnBuilders.remove(getColumnKeyName(table, column));
+        columnBuilders.removeMultiKey(table, column);
     }
 
     private void dropTable(DropTableChange dropTable) {
-        //TODO: This is not using the dropColumn method because retrieving the single column keys is convoluted. Maybe the data structure holding the builders should be revised.
-        columnBuilders.keySet().removeIf(key -> key.startsWith(dropTable.getTableName()));
+        Set<MultiKey<? extends String>> allTableColumns = columnBuilders.keySet().stream()
+            .filter(key -> StringUtils.equals(key.getKey(TABLE_MULTI_KEY_INDEX), dropTable.getTableName()))
+            .collect(Collectors.toSet());
+        allTableColumns.forEach(
+            key -> dropColumn(key.getKey(TABLE_MULTI_KEY_INDEX), key.getKey(COLUMN_MULTI_KEY_INDEX))
+        );
         tableBuilders.remove(dropTable.getTableName());
     }
 
     private void addUniqueConstraint(String tableName, AddUniqueConstraintChange uniqueConstraint) {
         for (String columnName : uniqueConstraint.getColumnNames().split(",")) {
-            Column.ColumnBuilder columnBuilder = columnBuilders.get(getColumnKeyName(tableName, columnName));
+            Column.ColumnBuilder columnBuilder = columnBuilders.get(tableName, columnName);
             columnBuilder.unique(true);
         }
     }
 
     private void addPrimaryKey(AddPrimaryKeyChange primaryKey) {
         for (String columnName : primaryKey.getColumnNames().split(",")) {
-            Column.ColumnBuilder columnBuilder = columnBuilders.get(getColumnKeyName(primaryKey.getTableName(), columnName));
+            Column.ColumnBuilder columnBuilder = columnBuilders.get(primaryKey.getTableName(), columnName);
             columnBuilder.primaryKey(true);
         }
     }
@@ -108,7 +115,7 @@ public class LiquibaseToModelMapper {
                 columnBuilder.unique(constraints.isUnique());
             }
         }
-        columnBuilders.put(getColumnKeyName(tableName, column.getName()), columnBuilder);
+        columnBuilders.put(tableName, column.getName(), columnBuilder);
     }
 
     private void createTable(CreateTableChange change) {
