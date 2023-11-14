@@ -45,7 +45,7 @@ Liquigraph currently supports the following output destinations:
 
 ## Usage
 
-Download the latest release from the [releases page]() and run it with the following command:
+Download the latest release from the [releases page](https://github.com/crossbone-magister/liquigraph/releases) and run it with the following command:
 
 ```bash
 java -jar liquigraph-cli.jar <changelog-file>
