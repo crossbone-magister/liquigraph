@@ -11,15 +11,16 @@ changelog files.
 
 Liquigraph currently supports the following commands:
 
-| Command               | Support | Note                                                       |
-|-----------------------|---------|------------------------------------------------------------|
-| Create Table          | Partial |                                                            |
-| Add Column            | Partial |                                                            |
-| Add Primary Key       | Partial |                                                            |
-| Add Unique Constraint | Partial |                                                            |
-| Drop Table            | Partial | cascade constraints attribute is ignored                   |
-| Drop Column           | Full    |                                                            |
-| Rename Column         | Partial | Method does not respect insertion order of original column |
+| Command               | Support | Note                                                                          |
+|-----------------------|---------|-------------------------------------------------------------------------------|
+| Create Table          | Partial |                                                                               |
+| Add Column            | Partial |                                                                               |
+| Add Primary Key       | Partial |                                                                               |
+| Add Unique Constraint | Partial |                                                                               |
+| Drop Table            | Partial | cascade constraints attribute is ignored                                      |
+| Drop Column           | Full    |                                                                               |
+| Rename Column         | Partial | Method does not respect insertion order of original column                    |
+| Rename Table          | Partial | Method does not respect insertion order of original table and related columns |
 
 > **Note:** Partial support means that not all the attributes of the change have been analyzed and implemented yet.
 
@@ -45,7 +46,8 @@ Liquigraph currently supports the following output destinations:
 
 ## Usage
 
-Download the latest release from the [releases page](https://github.com/crossbone-magister/liquigraph/releases) and run it with the following command:
+Download the latest release from the [releases page](https://github.com/crossbone-magister/liquigraph/releases) and run
+it with the following command:
 
 ```bash
 java -jar liquigraph-cli.jar <changelog-file>

@@ -103,6 +103,15 @@ class LiquibaseToModelMapperTest {
     }
 
     @Test
+    void mapRenameTable() throws LiquibaseException {
+        DatabaseChangeLog databaseChangeLog = loadChangeLog("changelog/rename-table.yml");
+        List<Table> tables = new LiquibaseToModelMapper().map(databaseChangeLog);
+        assertThat(tables).size().isEqualTo(1);
+        Table configurationTable = tables.get(0);
+        assertThat(configurationTable).extracting(Table::getName).isEqualTo("CONFIGURATION_");
+    }
+
+    @Test
     void mapUnsupportedChangeType() throws LiquibaseException {
         DatabaseChangeLog databaseChangeLog = loadChangeLog("changelog/unsupported-change-type.yml");
         List<Table> tables = new LiquibaseToModelMapper().map(databaseChangeLog);

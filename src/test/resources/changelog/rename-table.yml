@@ -1,0 +1,11 @@
+databaseChangeLog:
+  - include:
+      file: create-table.yml
+      relativeToChangelogFile: true
+  - changeSet:
+      id: rename-table-test
+      author: liquigraph-test
+      changes:
+        - renameTable:
+            oldTableName: CONFIGURATION
+            newTableName: CONFIGURATION_

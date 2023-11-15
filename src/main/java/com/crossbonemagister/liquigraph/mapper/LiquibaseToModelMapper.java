@@ -49,6 +49,9 @@ public class LiquibaseToModelMapper {
                     case RenameColumnChange renameColumn:
                         renameColumn(renameColumn);
                         break;
+                    case RenameTableChange renameTable:
+                        renameTable(renameTable);
+                        break;
                     default:
                         break;
                 }
@@ -59,6 +62,23 @@ public class LiquibaseToModelMapper {
             tableBuilder.column(value.build());
         });
         return tableBuilders.values().stream().map(Table.TableBuilder::build).toList();
+    }
+
+    private void renameTable(RenameTableChange renameTable) {
+        renameTable(renameTable.getOldTableName(), renameTable.getNewTableName());
+    }
+
+    private void renameTable(String oldName, String newName) {
+        Table.TableBuilder tableBuilder = tableBuilders.get(oldName);
+        tableBuilder.name(newName);
+        //TODO: This renames the table but doesn't maintain insertion order. Is it a problem or not?
+        tableBuilders.remove(oldName);
+        tableBuilders.put(newName, tableBuilder);
+        columnBuilders.keySet().stream().filter(key -> StringUtils.equals(key.getKey(TABLE_MULTI_KEY_INDEX), oldName)).toList()
+            .forEach(key -> {
+                columnBuilders.put(newName, key.getKey(COLUMN_MULTI_KEY_INDEX), columnBuilders.get(key));
+                columnBuilders.remove(key);
+            });
     }
 
     private void renameColumn(RenameColumnChange renameColumn) {
