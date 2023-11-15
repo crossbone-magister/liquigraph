@@ -3,7 +3,7 @@ databaseChangeLog:
       file: create-table.yml
       relativeToChangelogFile: true
   - changeSet:
-      id: drop-column-single-test
+      id: rename-column-test
       author: liquigraph-test
       changes:
         - renameColumn:
