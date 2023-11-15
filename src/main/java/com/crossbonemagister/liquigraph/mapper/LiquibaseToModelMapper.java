@@ -25,7 +25,7 @@ public class LiquibaseToModelMapper {
     MultiKeyMap<String, Column.ColumnBuilder> columnBuilders = MultiKeyMap.multiKeyMap(new LinkedMap<>());
 
     public List<Table> map(DatabaseChangeLog changeLog) {
-        changeLog.getChangeSets().forEach(changeSet -> {
+        changeLog.getChangeSets().forEach(changeSet ->
             changeSet.getChanges().forEach(change -> {
                 switch (change) {
                     case CreateTableChange table:
@@ -55,8 +55,7 @@ public class LiquibaseToModelMapper {
                     default:
                         break;
                 }
-            });
-        });
+            }));
         columnBuilders.forEach((key, value) -> {
             Table.TableBuilder tableBuilder = tableBuilders.get(key.getKey(TABLE_MULTI_KEY_INDEX));
             tableBuilder.column(value.build());
@@ -97,9 +96,7 @@ public class LiquibaseToModelMapper {
         if (StringUtils.isNotBlank(dropColumn.getColumnName())) {
             dropColumn(dropColumn.getTableName(), dropColumn.getColumnName());
         } else {
-            dropColumn.getColumns().forEach(column -> {
-                dropColumn(dropColumn.getTableName(), column.getName());
-            });
+            dropColumn.getColumns().forEach(column -> dropColumn(dropColumn.getTableName(), column.getName()));
         }
     }
 
@@ -132,9 +129,7 @@ public class LiquibaseToModelMapper {
     }
 
     private void createColumns(String tableName, AddColumnChange change) {
-        change.getColumns().forEach(column -> {
-            createColumn(tableName, column);
-        });
+        change.getColumns().forEach(column -> createColumn(tableName, column));
     }
 
     private void createColumn(String tableName, ColumnConfig column) {
@@ -157,8 +152,6 @@ public class LiquibaseToModelMapper {
         Table.TableBuilder tableBuilder = Table.builder();
         tableBuilder.name(change.getTableName());
         tableBuilders.put(change.getTableName(), tableBuilder);
-        change.getColumns().forEach(column -> {
-            createColumn(change.getTableName(), column);
-        });
+        change.getColumns().forEach(column -> createColumn(change.getTableName(), column));
     }
 }
